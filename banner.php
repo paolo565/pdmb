@@ -1,6 +1,6 @@
 <?php
 
-$server_ip = isset($_GET['ip']) ? $_GET['ip'] : 'play.craftworldmc.com';
+$server_ip = 'play.craftworldmc.com';
 $server_title = 'CraftWorld';
 
 $font_regular = './static/font/regular.ttf';
@@ -255,6 +255,6 @@ imagerectangle($banner, $x + 9 * 2, $y + 1 * 2, $x + 10 * 2 - 1, $y + 7 * 2 - 1,
 imagerectangle($banner, $x + 8 * 2, $y + 0 * 2, $x + 9  * 2 - 1, $y + 6 * 2 - 1, $fills[9]);
 
 // Banner Generation Completed
-echo imagepng($banner);
+imagepng($banner);
 
 ?>
