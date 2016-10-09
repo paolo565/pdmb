@@ -8,17 +8,25 @@ $font_bold    = './static/font/bold.ttf';
 
 $start = microtime(true);
 
-// Disable browser caching
-header('cache-control:no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
-header('expires: Thu, 00 Nov 1980 00:00:00 GMT');
-header('pragma: no-cache');
+// Browser caching headers
+header('Cache-Control: public, max-age=5, must-revalidate');
 
 require_once './include/minecraftserverstatus.class.php';
 $status = new MinecraftServerStatus();
 
 // Server Status
 $response = $status->getStatus($server_ip);
-//die(json_encode($response));
+
+$etag = md5(json_encode($response['raw_data']));
+$etag = 'W/"' . $etag . '"';
+
+header('Etag: ' . $etag);
+
+if (!empty($_SERVER['HTTP_IF_NONE_MATCH']) && $_SERVER['HTTP_IF_NONE_MATCH'] == $etag) {
+  http_response_code(304);
+  exit;
+}
+
 $data = explode(',', $response['raw_data']->favicon);
 $favicon = imagecreatefromstring(base64_decode($data[1]));
 
